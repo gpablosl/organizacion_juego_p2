@@ -5,11 +5,12 @@ from glew_wish import *
 import glfw
 import math
 from Modelo import *
+from random import random
 
 class Bicho(Modelo):
 
     vivo = True
-
+    r = random()
     def __init__(self, x, y):
         super().__init__(x,y)
         self.extremo_izquierdo = 0.07
@@ -34,7 +35,7 @@ class Bicho(Modelo):
             glPushMatrix()
             glTranslatef(self.posicion_x, self.posicion_y, self.posicion_z)
             glBegin(GL_POLYGON)
-            glColor3f(.75,0.18,.38)
+            glColor3f(self.r,0.18,.38)
             glVertex3f(-0.02*2.5,0.01*2.5,0)
             glVertex3f(-0.01*2.5,0.0,0)
             glVertex3f(-0.02*2.5,-0.01*2.5,0)
@@ -47,4 +48,3 @@ class Bicho(Modelo):
 
             glPopMatrix()
             
-            self.dibujar_bounding_box()
