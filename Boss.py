@@ -8,10 +8,10 @@ class Boss(Modelo):
     velocidad = 2.8
     def __init__(self):
         super().__init__()
-        self.extremo_izquierdo = 0.05
-        self.extremo_derecho = 0.05
-        self.extremo_inferior = 0.05
-        self.extremo_superior = 0.05
+        self.extremo_izquierdo = 0.12
+        self.extremo_derecho = 0.12
+        self.extremo_inferior = 0.12
+        self.extremo_superior = 0.12
 
     def actualizar(self,tiempo_delta):
         cantidad_movimiento = self.velocidad * tiempo_delta
