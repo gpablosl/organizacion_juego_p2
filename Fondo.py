@@ -2,16 +2,7 @@ from OpenGL.GL import *
 from glew_wish import *
 
 class Fondo():
-    
     def dibujar(self):
-        glBegin(GL_LINE_LOOP)
-        glColor3f(0.0,0.0,0.0)
-        glVertex3f(-0.9,-0.9,0.0)
-        glVertex3f(0.9,-0.9,0.0)
-        glVertex3f(0.9,0.9,0.0)
-        glVertex3f(-0.9, 0.9,0.0)
-        glVertex3f(-0.9,-0.9,0.0)
-        glEnd()
         #wall 1
         glBegin(GL_QUADS)
         glColor3f(0.4,0.65,0.15)
@@ -46,7 +37,7 @@ class Fondo():
         glEnd()
 
         glBegin(GL_QUADS)
-        glColor3f(0.40,0.53,0)
+        glColor3f(0.20,0.53,0)
         glVertex3f(-1,1.56,0)
         glVertex3f(-1.0,0.5,0)
         glVertex3f(-0.5, 0.5,.0)
@@ -54,7 +45,7 @@ class Fondo():
         glEnd()
 
         glBegin(GL_QUADS)
-        glColor3f(0.53,0.44,0.2)
+        glColor3f(0.33,0.6,0.2)
         glVertex3f(1,-1.0,0)
         glVertex3f(1.0,-0.5,0)
         glVertex3f(0.5, -0.5,.0)
@@ -78,11 +69,11 @@ class Fondo():
         glEnd()
 
         glBegin(GL_QUADS)
-        glColor3f(0.3,0.7,0.9)
-        glVertex3f(-0.1,-0.9,0)
-        glVertex3f(0.1,-0.9,0)
-        glVertex3f(0.1, -0.7,0.0)
-        glVertex3f(-0.1,-0.7,0)
+        glColor3f(0.3,0.7,0.2)
+        glVertex3f(-0.1,0.9,0)
+        glVertex3f(0.1,0.9,0)
+        glVertex3f(0.1, 0.7,0.0)
+        glVertex3f(-0.1,0.7,0)
         glEnd()
 
         glBegin(GL_QUADS)
@@ -119,15 +110,19 @@ class Fondo():
 
 
         glBegin(GL_POLYGON)
-        glColor3f(0.6,0.4,0.22)
-        glVertex3f(-0.0, -0.0,.0)
-        glVertex3f(0.01*3,-0.01*3,0.0)
-        glVertex3f(0.0,-0.02*3,0.0)
-        glVertex3f(0.02*3, -0.05*3,.0)
-        glVertex3f(0.05*3,-0.06*3,0)
-        glVertex3f(0.0,-0.1*3,0)
-        glVertex3f(-0.05*3,-0.06*3,0)
-        glVertex3f(-0.02*3, -0.05*3,.0)
-        glVertex3f(-0.02*3,-0.02*3,0.0)
-        glVertex3f(-0.01*3,-0.01*3,0.0)
+        glColor3f(0.2,0.4,0.22)
+        glVertex3f(-0.0, -0.0+0.1,.0)
+        glVertex3f(0.05*3,-0.06*3+0.1,0)
+        glVertex3f(0.0,-0.1*3+0.1,0)
+        glVertex3f(-0.05*3,-0.06*3+0.1,0)
+        glVertex3f(-0.02*3, -0.05*3+0.1,.0)
+        glEnd()
+
+        #SPAWN
+        glBegin(GL_QUADS)
+        glColor3f(0.6,0.7,0.6)
+        glVertex3f(-0.1,-0.9,0)
+        glVertex3f(0.1,-0.9,0)
+        glVertex3f(0.1, -0.7,0.0)
+        glVertex3f(-0.1,-0.7,0)
         glEnd()

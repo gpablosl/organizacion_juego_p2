@@ -6,13 +6,13 @@ from Bicho import *
 from OpenGL.GL import *
 from glew_wish import *
 import glfw
-from Nave import *
+from Escoba import *
 from Boss import *
 from PowerUp import *
 from Fondo import *
 
 window = None
-nave = Nave()
+escoba = Escoba()
 boss = Boss()
 fondo = Fondo()
 powerUp = PowerUp()
@@ -27,49 +27,40 @@ def actualizar():
     tiempo_actual = glfw.get_time()
     tiempo_delta = tiempo_actual - tiempo_anterior
     boss.actualizar(tiempo_delta)
-
-    nave.actualizar(window, tiempo_delta)
+    escoba.actualizar(window, tiempo_delta)
     for bicho in bichos:
         if bicho.vivo:
             bicho.actualizar()
-            if bicho.colisionando(nave):
+            if bicho.colisionando(escoba):
                     bicho.vivo = False
                     bicho_contador = bicho_contador + 1
                     print(bicho_contador)
                     if bicho_contador == 6:
+                        print("Game over: ganaste")
                         glfw.set_window_should_close(window, 1)
 
-    if nave.colisionando(powerUp):
-        nave.velocidad = nave.velocidad * 1.15
+    if escoba.colisionando(powerUp):
+        escoba.velocidad = 3.0
+        escoba.scale =  4.5
         powerUp.presente = False
-    tiempo_anterior = tiempo_actual
-    if nave.colisionando(boss):
-        glfw.set_window_should_close(window, 1)
 
-    
+    if escoba.colisionando(boss):
+        glfw.set_window_should_close(window, 1)
+        print("Game over: perdiste")
+
+    tiempo_anterior = tiempo_actual
+
 def colisionando():
     colisionando = False
     return colisionando
 
-def colisionando_power_up():
-    colisionandoP = False
-    if (nave.posicion_x[0] + 0.05 >= powerUp.posicion_x - 0.05 
-        and nave.posicion_x[0] - 0.05 <= powerUp.posicion_x + 0.05 
-        and nave.posicion_y + 0.05 >= powerUp.posicion_y - 0.05 
-        and nave.posicion_y - 0.05 <= powerUp.posicion_y + 0.05):
-        colisionandoP = True 
-    return colisionandoP
-
 def draw():
     fondo.dibujar()
+    escoba.dibujar()
     for bicho in bichos:
         bicho.dibujar()
-    #draw_bala()
-    nave.dibujar()
-    boss.dibujar()
     powerUp.dibujar()
-
-
+    boss.dibujar()
 
 def main():
     global window

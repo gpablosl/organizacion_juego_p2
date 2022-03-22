@@ -1,9 +1,5 @@
-from msilib.schema import Directory
-from re import M
 from OpenGL.GL import *
 from glew_wish import *
-import glfw
-import math
 from Modelo import *
 from random import random
 
@@ -35,7 +31,7 @@ class Bicho(Modelo):
             glPushMatrix()
             glTranslatef(self.posicion_x, self.posicion_y, self.posicion_z)
             glBegin(GL_POLYGON)
-            glColor3f(self.r,0.18,.38)
+            glColor3f(0.5,0.18,self.r)
             glVertex3f(-0.02*2.5,0.01*2.5,0)
             glVertex3f(-0.01*2.5,0.0,0)
             glVertex3f(-0.02*2.5,-0.01*2.5,0)
