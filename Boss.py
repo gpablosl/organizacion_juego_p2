@@ -1,42 +1,72 @@
 from OpenGL.GL import *
-from glew_wish import *
 from Modelo import *
-from random import random
+import glm
 
 class Boss(Modelo):
 
-    velocidad = 2.8
-    def __init__(self):
-        super().__init__()
+    velocidad = 0.005
+    direccion = 0
+
+    def __init__(self,shader, posicion_id, transformaciones_id, color_id):
         self.extremo_izquierdo = 0.12
         self.extremo_derecho = 0.12
         self.extremo_inferior = 0.12
         self.extremo_superior = 0.12
+        self.posicion = glm.vec3(0.8,0.0,0.0)
 
-    def actualizar(self,tiempo_delta):
-        cantidad_movimiento = self.velocidad * tiempo_delta
+        self.vertices = np.array(
+            [
+                -0.01*5,0.01*5,0,1.0,  0.0,0.0,0.1,1.0, 
+                0.00*5,0.01*5,0,1.0,    0.0,0.0,0.1,1.0,  
+                0.01*5,-0.00*5,0,1.0,    0.0,0.0,0.1,1.0,
+                0.01*5,-0.01*5,0,1.0,     0.0,0.0,0.1,1.0,
+                0.0,-0.02*5,0,1.0,  0.0,0.0,0.1,1.0, 
+                -0.01*5,-0.02*5,0,1.0,    0.0,0.0,0.1,1.0,  
+                -0.02*5,-0.01*5,0,1.0,    0.0,0.0,0.1,1.0,
+                -0.02*5,-0.00,0,1.0,     0.0,0.0,0.1,1.0,
+                -0.01*5,0.01*5,0,1.0,  0.0,0.0,0.1,1.0,
+
+                -0.01*4,0.01*4,0,1.0,  0.0,0.0,0.1,1.0, 
+                0.00*4,0.01*4,0,1.0,    0.0,0.0,0.1,1.0,  
+                0.01*4,-0.00*4,0,1.0,    0.0,0.0,0.1,1.0,
+                0.01*4,-0.01*4,0,1.0,     0.0,0.0,0.1,1.0,
+                0.0,-0.02*4,0,1.0,  0.0,0.0,0.1,1.0, 
+                -0.01*4,-0.02*4,0,1.0,    0.0,0.0,0.1,1.0,  
+                -0.02*4,-0.01*4,0,1.0,    0.0,0.0,0.1,1.0,
+                -0.02*4,-0.00,0,1.0,     0.0,0.0,0.1,1.0,
+                -0.01*4,0.01*4,0,1.0,  0.0,0.0,0.1,1.0 
+            ], dtype="float32"
+        )
+
+        self.transformaciones = glm.mat4(1.0)
+        super().__init__(shader, posicion_id, transformaciones_id, color_id)
+
+    def actualizar(self):
+        cantidad_movimiento = self.velocidad * 0.5
         if self.direccion == 0:
-            self.posicion_x = self.posicion_x - cantidad_movimiento
+            self.posicion.x = self.posicion.x - cantidad_movimiento
         elif self.direccion == 1:
-            self.posicion_x = self.posicion_x + cantidad_movimiento
-        if self.posicion_x <= -0.8 and self.direccion == 0:
+            self.posicion.x = self.posicion.x + cantidad_movimiento
+        if self.posicion.x <= -0.8 and self.direccion == 0:
             self.direccion = 1
-        if self.posicion_x >= 0.8 and self.direccion == 1:
+        if self.posicion.x >= 0.8 and self.direccion == 1:
             self.direccion = 0
-
+    
     def dibujar(self):
-        glPushMatrix()
-        glTranslatef(self.posicion_x, self.posicion_y, self.posicion_z)
-        glScalef(5,5,0)
-        glBegin(GL_POLYGON)
-        glColor3f(0.25, 0, random())
-        glVertex3f(-0.01,0.01,0.0)
-        glVertex3f(0.00,0.01,0.0)
-        glVertex3f(0.01,-0.00,0.0)
-        glVertex3f(0.01,-0.01,0.0)
-        glVertex3f(0.0,-0.02,0.0)
-        glVertex3f(-0.01,-0.02,0.0)
-        glVertex3f(-0.02,-0.01,0.0)
-        glVertex3f(-0.02,-0.00,0.0)
-        glEnd()
-        glPopMatrix()
+
+        self.transformaciones = glm.mat4(1.0)
+        self.transformaciones = glm.translate(self.transformaciones,
+                self.posicion)
+
+    
+        self.shader.usar_programa()
+        gl.glBindVertexArray(self.VAO)
+
+        gl.glUniformMatrix4fv(self.transformaciones_id,
+                1, gl.GL_FALSE, glm.value_ptr(self.transformaciones))
+
+
+        gl.glDrawArrays(gl.GL_TRIANGLE_STRIP, 0, 18)
+
+        gl.glBindVertexArray(0)
+        self.shader.liberar_programa()

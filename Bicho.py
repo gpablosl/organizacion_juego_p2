@@ -1,12 +1,9 @@
 from OpenGL.GL import *
-from glew_wish import *
 from Modelo import *
-from random import random
 
 class Bicho(Modelo):
 
     vivo = True
-    r = random()
     def __init__(self, x, y):
         super().__init__(x,y)
         self.extremo_izquierdo = 0.07
@@ -16,31 +13,45 @@ class Bicho(Modelo):
         
     def actualizar (self):
         if self.vivo:
-            if self.posicion_x > 1.05: 
-                self.posicion_x = -1.0
-            if self.posicion_x < -1.05: 
-                self.posicion_x = 1.0
+            if self.posicion.x > 1.05: 
+                self.posicion_id[0] = -1.0
+            if self.posicion_id[0] < -1.05: 
+                self.posicion_id[0] = 1.0
                 
-            if self.posicion_y > 1.05: 
-                self.posicion_y = -1.0   
-            if self.posicion_y < -1.05: 
-                self.posicion_y = 1.0  
+            if self.posicion_id[1] > 1.05: 
+                self.posicion_id[1] = -1.0   
+            if self.posicion_id[1] < -1.05: 
+                self.posicion_id[1] = 1.0  
 
-    def dibujar(self):
-        if self.vivo:
-            glPushMatrix()
-            glTranslatef(self.posicion_x, self.posicion_y, self.posicion_z)
-            glBegin(GL_POLYGON)
-            glColor3f(0.5,0.18,self.r)
-            glVertex3f(-0.02*2.5,0.01*2.5,0)
-            glVertex3f(-0.01*2.5,0.0,0)
-            glVertex3f(-0.02*2.5,-0.01*2.5,0)
-            glVertex3f(-0.0,-0.03*2.5,0)
-            glVertex3f(0.02*2.5,-0.01*2.5,0)
-            glVertex3f(0.01*2.5,0.00,0)
-            glVertex3f(0.02*2.5,0.01*2.5,0)
-            glVertex3f(0.00,0.03*2.5,0)
-            glEnd()
 
-            glPopMatrix()
+        self.vertices = np.array(
+                [
+                   -0.02*2.5,0.01*2.5,0,1.0,    0.5,0.18,0.6, 1.0,
+                    -0.01*2.5,0.0,0,1.0,     0.5,0.18,0.6,1.0,
+                   -0.02*2.5,-0.01*2.5,0,1.0,       0.5,0.18,0.6,1.0,
+                    -0.0,-0.03*2.5,0,1.0,     0.5,0.18,0.6,1.0
+                   0.02*2.5,-0.01*2.5,0,1.0,    0.5,0.18,0.6, 1.0,
+                    0.01*2.5,0.00,1.0,     0.5,0.18,0.6,1.0,
+                   0.02*2.5,0.01*2.5,.0,1.0,       0.5,0.18,0.6,1.0,
+                    0.00,0.03*2.5,0,1.0,     0.5,0.18,0.6,1.0
+                ], dtype="float32"
+            )
+        
             
+def dibujar(self):
+        self.shader.usar_programa()
+        gl.glBindVertexArray(self.VAO)
+
+        gl.glUniformMatrix4fv(self.transformaciones_id,
+                1, gl.GL_FALSE, glm.value_ptr(self.transformaciones))
+
+        gl.glDrawArrays(gl.GL_TRIANGLE_STRIP, 0, 4)
+
+
+        gl.glBindVertexArray(0)
+        self.shader.liberar_programa()
+
+def borrar(self):
+        gl.glDeleteVertexArrays(1, self.VAO)
+        gl.glDeleteBuffers(1, self.VBO)
+
